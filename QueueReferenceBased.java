@@ -1,4 +1,3 @@
-
 public class QueueReferenceBased  implements QueueInterface{
   private Node lastNode;
 
@@ -75,6 +74,38 @@ public class QueueReferenceBased  implements QueueInterface{
       throw new QueueException("QueueException on peek:"
                              + "queue empty");
     } 
-  }  
+  }
+
+    /**
+     * Finds the size of the queue by circling the queue until reaching the last node again.
+     *
+     * @return Number of elements in the queue.
+     */
+  public int getSize(){
+      int size = 1;
+
+      //Empty queue actually implies only one card in our case. Because when the queue is actually empty and there
+      //are no remaining card objects, the game will terminate. The last card object will have a null node reference, although
+      //it is still in the queue, thus the queue is "empty" but there is one remaining card. Thus return 1.
+      if (isEmpty()){
+          return size;
+      }
+
+      //If not then set size to 2, firstnode in the circle is the "lastNode" and the second is referenced by lastNode.
+      else{
+          size = 2;
+          Node firstNode = lastNode;
+          Node nextNode = firstNode.getNext();
+
+          //If the reference by nextNode is null, then there are only 2 entries. Also if the reference is to the firstNode,
+          //then we have reached the beginning of the circular queue again.
+          while (nextNode!= null && nextNode != firstNode){
+              size += 1;
+              nextNode = nextNode.getNext();
+          }
+      }
+
+      return size;
+  }
 
 } 
